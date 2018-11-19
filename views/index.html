@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Welcome to Glitch!</title>
+    <title>Exercise Tracker</title>
     <meta name="description" content="A cool thing made with Glitch">
     <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
     <meta charset="utf-8">
@@ -26,33 +26,39 @@
   <body>
     <header>
       <h1>
-        A Dream of the Future
+        Exercise Tracker
       </h1>
     </header>
 
     <main>
-      <p class="bold">Oh hi,</p>
-      
-      <p>Tell me your hopes and dreams:</p>
-      
-      <form>
-        <input name="dream" type="text" maxlength="100" placeholder="Dreams!" aria-labelledby="submit-dream">
-        <button type="submit" id="submit-dream">Submit Dream</button>
-      </form>
-      
-      <section class="dreams">
-        <ul id="dreams"></ul>
+
+      <section>
+        <h2>Create a new user</h2>
+        <code>POST /api/exercise/new-user</code>
+        <form action="/api/exercise/new-user" method="POST">
+          <input placeholder="username" name="username" required/>
+          <button type="submit">Submit</button>
+        </form>    
       </section>
+    
+      <section>
+        <h2>Add Exercises</h2>
+        <code>POST /api/exercise/add</code>
+        <form action="" method="post">
+          <input type="text" placeholder="userId*" required />
+          <input type="text" placeholder="description"  required />
+          <input type="text" placeholder="duration* (mins)" required />
+          <input type="date" name="" id="" placeholder="date" />
+          <button type="submit">Submit</button>
+        </form>
+      </section>
+
+      <section>
+        <h2>GET user's exercise log: <code>GET /api/exercise/log?{userId}[&from][&to][&limit]</code></h2>
+        <p><span>{ }</span> = required, <span>[ ]</span> = optional</p>
+        <p><span>from, to </span>= dates (yyyy-mm-dd); <span>limit</span> = number</p>
+      </section>
+
     </main>
-
-    <footer>
-      Made with <a href="https://glitch.com">Glitch</a>!
-    </footer>
-
-    <!-- include the Glitch button to show what the webpage is about and
-          to make it easier for folks to view source and remix -->
-    <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
-    <script src="https://button.glitch.me/button.js"></script>
-
   </body>
 </html>
