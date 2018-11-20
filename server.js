@@ -23,21 +23,62 @@ app.get('/', function(request, response) {
   response.sendFile(__dirname + '/views/index.html');
 });
 
-app.post('/api/exercise/new-user', (req, res) => {
-  console.log(req.body.username);
-  let user = new User({
-    username: req.body.username,
-  });
-  user.save().then((doc) => {
-    res.json({
-      username: doc.username,
-      _id: doc._id
-    })
-  }, (e) => {
-    console.log('error :', e);
-    res.send(e.message);
-  })
-})
+app.post('/api/exercise/new-user', async (req, res) => {
+  try {
+    let username = req.body.username.trim();
+    console.log('username :', username);
+    let userFromDb = await User.findOne({ username }).exec();
+    if (userFromDb) {
+      res.send("Username already exists, please create another one")
+    } else {
+      let user = await User.create({
+        username
+      });
+      res.json({
+        _id: user._id,
+        username
+      });
+    }
+  } catch (error) {
+    res.send(error.message);
+  }
+});
+
+app.post('/api/exercise/add', async (req, res) => {
+  try {
+    const { userId, description, duration, date } = req.body;
+    console.log('userId :', userId);
+    console.log('description :', description);
+    console.log('duration :', duration, typeof duration);
+    console.log('date :', date);
+    let user = await User.findById(userId).exec();
+    if (!user) {
+      res.send('User does not exist')
+    } else {
+      let exercise = await Exercise.create({
+        userId: user._id,
+        description: description.trim(),
+        duration: Number(duration),
+        date: new Date(date) 
+      });
+      res.status(201).json(exercise);
+    }
+    
+  } catch (error) {
+    res.send(error.message);
+  }
+});
+
+app.get('/api/exercise/log', async (req, res) => {   //?{userId} &[from] &[to] &[limit]
+  console.log(req.query);
+  let { userId } = req.query;
+  let user = await User.findById(userId).populate('log.exercise').exec();
+  if (!user) {
+    res.send("User not found, please check the id");
+  } else {
+    res.json(user);
+  }
+});
 
 const PORT = process.env.port || 3000;
 

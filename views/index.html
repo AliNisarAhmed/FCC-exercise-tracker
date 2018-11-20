@@ -44,11 +44,11 @@
       <section>
         <h2>Add Exercises</h2>
         <code>POST /api/exercise/add</code>
-        <form action="" method="post">
-          <input type="text" placeholder="userId*" required />
-          <input type="text" placeholder="description"  required />
-          <input type="text" placeholder="duration* (mins)" required />
-          <input type="date" name="" id="" placeholder="date" />
+        <form action="/api/exercise/add" method="POST">
+          <input type="text" placeholder="userId*" required name="userId" />
+          <input type="text" placeholder="description" required name="description" />
+          <input type="number" placeholder="duration* (mins)" required name="duration" />
+          <input type="date" id="" placeholder="date" name="date" />
           <button type="submit">Submit</button>
         </form>
       </section>

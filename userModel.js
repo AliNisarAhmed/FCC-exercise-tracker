@@ -8,8 +8,7 @@ const userSchema = new mongoose.Schema({
     unique: true
   },
   log: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Exercise'
+    exercise: { type: mongoose.Schema.Types.ObjectId, ref: 'Exercise'}
   }]
 });
 
