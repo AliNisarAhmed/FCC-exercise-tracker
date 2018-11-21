@@ -7,7 +7,39 @@
 
 body {
   font-family: "Benton Sans", "Helvetica Neue", helvetica, arial, sans-serif;
-  margin: 2em;
+  height: 95vh;
+  padding: 10px 40px;
+}
+
+main {
+  width: 60%;
+  height: 90%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 20px;
+}
+
+@media only screen and (max-width: 530px) {
+  main {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 250px 350px 300px;
+  }
+}
+
+.get {
+  grid-column: 1 / -1;
+}
+
+
+section {
+  display: flex;
+  flex-direction: column;
+}
+
+code {
+  margin: 10px 0;
+  font-size: 1.1em;
 }
 
 h1 {
