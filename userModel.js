@@ -4,7 +4,7 @@ const userSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
-    minlength: 1,
+    minlength: 3,
     unique: true
   },
   log: [{

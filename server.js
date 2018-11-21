@@ -30,6 +30,8 @@ const { User } = require('./userModel');
 const { Exercise } = require('./exerciseModel');
 const connect = require('./mongoose');
 
+const Joi = require('joi');
+
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(express.static('public'));
@@ -40,8 +42,21 @@ app.get('/', function(req, res) {
 
 app.post('/api/exercise/new-user', async (req, res) => {
   try {
-    let username = req.body.username.trim();
-    // console.log('username :', username);
+    
+    const schema = Joi.object().keys({
+      username: Joi.string().alphanum().max(30).required().trim()
+    });
+
+    const result = await Joi.validate(req.body, schema);
+
+    if (result.error) {
+      // console.log('error in joi');
+      res.status(400).send(result.error.details.message);
+    }
+    
+    // console.log('result: ', result);
+    let { username } = result;
+
     let userFromDb = await User.findOne({ username }).exec();
     if (userFromDb) {
       res.send("Username already exists, please create another one")
@@ -55,7 +70,7 @@ app.post('/api/exercise/new-user', async (req, res) => {
       });
     }
   } catch (error) {
-    res.send(error.message);
+    res.status(400).send(error.message);
   }
 });
 
@@ -66,6 +81,9 @@ app.post('/api/exercise/add', async (req, res) => {
     // console.log('description :', description);
     // console.log('duration :', duration, typeof duration);
     // console.log('date :', date);
+    if (!date) {
+      date = Date.now();
+    }
     date = new Date(date);
     let dateUnix = date.valueOf()
     let user = await User.findById(userId).exec();
@@ -124,7 +142,7 @@ app.get('/api/exercise/log', async (req, res) => {   //?{userId} &[from] &[to] &
         };
       })
 
-      res.json({
+      res.status(200).json({
         _id: filtered._id,
         username: filtered.username,
         count: filtered.log.length,
@@ -133,7 +151,7 @@ app.get('/api/exercise/log', async (req, res) => {   //?{userId} &[from] &[to] &
        
     }
   } catch (error) {
-    res.send(error.message);
+    res.status(400).send(error.message);
   }
 });
 
